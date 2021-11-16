@@ -1,0 +1,291 @@
+syntax = "proto3";
+
+package oburn;
+
+message Message {
+  bool isSuccess = 1;
+  int32  code = 2;
+  string  message = 3;
+}
+
+message EmptyRequest{
+
+}
+
+message SetBurnConfigRequest {
+  string discLabel = 1;
+  string  discPasswd = 2;
+  int32 fsType = 3;  //文件系统类型 0:NotSet,1:ImageBurn,2:StreamBurn,3:UdfBurn,6:ExtImage,7:UnKnown
+  bool isVerify = 4;
+}
+
+message SetBurnConfigResponse {
+  Message message = 1;
+}
+
+message GetBurnConfigResponse {
+  Message message = 1;
+  string discLabel = 2;
+  string  discPasswd = 3;
+  int32 fsType = 4;  //文件系统类型 0:NotSet,1:ImageBurn,2:StreamBurn,3:UdfBurn,6:ExtImage,7:UnKnown
+}
+
+message SetSpeedRequest{
+  int32 discType = 1;
+  int32 speed = 2;
+}
+
+message SetSpeedResponse{
+  Message message = 1;
+}
+
+message GetSpeedRequest{
+  int32 discType = 1;
+}
+
+message GetSpeedResponse{
+  Message message = 1;
+  int32 discType = 2;
+  int32 speed = 3;
+}
+
+message GetDiscInfoResponse {
+  Message message = 1;
+  MediaInfo mediaInfo = 2;
+  DiscFsInfo discFsInfo = 3;
+}
+
+message MediaInfo {
+  int32 existed = 1;
+  bool isBlank = 2;
+  bool isCompleted = 3;
+  string serialNo = 4;
+  string mid = 5;
+  int32 discType = 6;
+  repeated int32 writeSpeed = 7;
+  int64 totalSize = 8;
+  int64 freeSize = 9;
+  int64 usedSize = 10;
+  int32 trackNum = 11;
+  repeated int32 trackStatusList = 12;
+  repeated int32 trackSizeList = 13;
+  repeated int32 trackUsedSizeList = 14;
+  repeated int32 trackNwaList = 15;
+  string userDefinedId = 16;
+}
+
+message DiscFsInfo {
+  string discLabel = 1;
+  string  discPasswd = 2;
+  int32 fsType = 3;  //文件系统类型 0:NotSet,1:ImageBurn,2:StreamBurn,3:UdfBurn,6:ExtImage,7:UnKnown
+  int32 mediaStatus = 4;
+}
+
+message CompleteDiscResponse {
+  Message message = 1;
+}
+
+message FormatDiscResponse {
+  Message message = 1;
+}
+
+message UnLoadDiscResponse {
+  Message message = 1;
+}
+
+message RecoverDiscResponse {
+  Message message = 1;
+}
+
+message DriveInfoResponse {
+  Message message = 1;
+  DriveInfo driveInfo = 2;
+}
+
+message DriveInfo {
+  string productId = 1;
+  string vendor = 2;
+  string serialNo = 3;
+  string fwVersion = 4;
+  int32 cdReadTime = 5;
+  int32 cdWriteTime = 6;
+  int32 dvdReadTime = 7;
+  int32 dvdWriteTime = 8;
+  int32 bdReadTime = 9;
+  int32 bdWriteTime = 10;
+  int32 powerOnTime = 11;
+}
+
+message OpenDriveTrayRequest{
+  bool disableUnlock = 1;
+}
+
+message OpenDriveTrayResponse{
+  Message message = 1;
+}
+
+message CloseDriveTrayResponse{
+  Message message = 1;
+}
+
+message GetDriveTrayStatusResponse{
+  Message message = 1;
+  int32 status = 2;
+}
+
+message SimulateDriveTrayChangesResponse{
+  Message message = 1;
+}
+
+message SystemRebootResponse {
+  Message message = 1;
+}
+
+message SystemPoweroffResponse {
+  Message message = 1;
+}
+
+message FirmwareVersion{
+  string appVersion = 1;
+  string appDate = 2;
+  string tag = 3;
+}
+
+message SystemInfoResponse {
+  Message message = 1;
+  string sysInfo = 2;
+  repeated FirmwareVersion firmwareVersion = 3;
+}
+
+
+message PutObjectRequest {
+  // TODO: 刻录文件请求体
+  string localPath = 1;
+  string bucketName = 2;
+  string objectName = 3;
+  int32 storageType = 4; //0:Local,1:Minio
+  string discPath = 5;
+  int64 offset = 6;
+  int64 count = 7;
+  string checkCode = 8;
+}
+
+message PutObjectResponse {
+  // TODO: 刻录文件返回体
+  Message message = 1;
+}
+
+message GetObjectRequest {
+  // TODO: 刻录文件请求体
+  string localPath = 1;
+  string bucketName = 2;
+  string objectName = 3;
+  int32 storageType = 4; //0:Local,1:Minio
+  string discPath = 5;
+  int64 offset = 6;
+  int64 count = 7;
+  string checkCode = 8;
+}
+
+message GetObjectResponse {
+  // TODO: 刻录文件返回体
+  Message message = 1;
+}
+
+message RemoveObjectRequest {
+  string discPath = 1;
+}
+
+message RemoveObjectResponse {
+  Message message = 1;
+}
+
+message RenameObjectRequest {
+  string oldDiscPath = 1;
+  string newDiscPath = 2;
+}
+
+message RenameObjectResponse {
+  Message message = 1;
+}
+
+message StatObjectRequest {
+  string filePath = 2;
+}
+
+message StatObjectResponse {
+  Message message = 1;
+  ObjectInfo objectInfo = 2;
+}
+
+message ObjectInfo {
+  string name = 1;
+  int64 size = 2;
+  uint32 mode = 3;
+  int64 modTime = 4;
+  bool isDir = 5;
+}
+
+message ListObjectsRequest {
+  string filePath = 2;
+}
+
+message ListObjectsResponse {
+  Message message = 1;
+  repeated ObjectInfo objectInfo = 2;
+}
+
+message MakeBucketRequest {
+  string discPath = 1;
+}
+
+message MakeBucketResponse {
+  Message message = 1;
+}
+
+message RemoveBucketRequest {
+  string discPath = 1;
+}
+
+message RemoveBucketResponse {
+  Message message = 1;
+}
+
+message CancelRequest {
+  string bucketName = 1;
+  string objectName = 2;
+
+}
+
+message CancelResponse {
+  Message message = 1;
+}
+
+service Oburn{
+  rpc SetBurnConfig (SetBurnConfigRequest) returns (SetBurnConfigResponse);
+  rpc GetBurnConfig (EmptyRequest) returns (GetBurnConfigResponse);
+  rpc SetBurnSpeed(SetSpeedRequest) returns (SetSpeedResponse);
+  rpc GetBurnSpeed(GetSpeedRequest) returns (GetSpeedResponse);
+  rpc GetDiscInfo(EmptyRequest) returns (GetDiscInfoResponse);
+  rpc CompleteDisc (EmptyRequest) returns (CompleteDiscResponse);
+  rpc UnLoadDisc(EmptyRequest) returns(UnLoadDiscResponse);
+  rpc RecoverDisc (EmptyRequest) returns (RecoverDiscResponse);
+  //################################################################################
+  rpc GetDriveInfo (EmptyRequest) returns (DriveInfoResponse);
+  rpc OpenDriveTray(OpenDriveTrayRequest) returns (OpenDriveTrayResponse);
+  rpc CloseDriveTray(EmptyRequest) returns (CloseDriveTrayResponse);
+  rpc GetDriveTrayStatus(EmptyRequest) returns (GetDriveTrayStatusResponse);
+  rpc SystemReboot (EmptyRequest) returns (SystemRebootResponse);
+  rpc SystemPoweroff (EmptyRequest) returns (SystemPoweroffResponse);
+  rpc SystemInfo (EmptyRequest) returns (SystemInfoResponse);
+  //################################################################################
+  rpc PutObject (PutObjectRequest) returns (PutObjectResponse);
+  rpc GetObject (GetObjectRequest) returns (GetObjectResponse);
+  rpc RemoveObject (RemoveObjectRequest) returns (RemoveObjectResponse);
+  rpc RenameObject (RenameObjectRequest) returns (RenameObjectResponse);
+  rpc StatObject (StatObjectRequest) returns (StatObjectResponse);
+  rpc ListObjects (ListObjectsRequest) returns (ListObjectsResponse);
+  rpc MakeBucket (MakeBucketRequest) returns (MakeBucketResponse);
+  rpc RemoveBucket (RemoveBucketRequest) returns (RemoveBucketResponse);
+  rpc Cancel (CancelRequest) returns (CancelResponse);
+}
